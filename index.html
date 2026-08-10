@@ -399,6 +399,9 @@ h1 em{font-style:italic;color:#1B7A8C}
 #notes .mail span{color:var(--faint);font-size:11.5px}
 #notes .pub{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);
   margin:14px 0 0;font-weight:600}
+#notes .ongoing{font-size:12.5px;line-height:1.65;color:#4A4238;margin:9px 0 0;
+  padding:11px 13px;background:#F1EADB;border-left:3px solid #B07A1E;border-radius:0 9px 9px 0}
+#notes .ongoing a{color:#1B7A8C;font-weight:600}
 #notesclose{position:absolute;top:14px;right:14px;background:none;border:0;color:var(--faint);
   font-size:21px;line-height:1;cursor:pointer;padding:2px 6px;border-radius:6px}
 #notesclose:hover{color:var(--ink);background:#EFE7D6}
@@ -494,7 +497,7 @@ h1 em{font-style:italic;color:#1B7A8C}
   <div class="body">
     <input id="search" type="search" placeholder="Search a person, lab or country…" autocomplete="off" spellcheck="false">
     <ul id="results"></ul>
-    <div class="sect">Research focus</div>
+    <div class="sect">Research focus <span id="areaall">all / none</span></div>
     <div class="chips" id="areachips"></div>
     <div class="sect">Country <span id="ctyall">all / none</span></div>
     <div id="countrybox"><div class="chips" id="countrychips"></div></div>
@@ -534,6 +537,10 @@ h1 em{font-style:italic;color:#1B7A8C}
      <a href="mailto:kr.abhishekum@gmail.com">kr.abhishekum@gmail.com</a><br>
      <span>Thank you.</span></p>
   <p class="pub">Published 4 August 2026</p>
+  <p class="ongoing">This map is still being worked on. I keep updating it and reshaping how it
+     behaves, so that it is easier and more useful to move around. If something is missing, wrong,
+     or simply awkward to use, I would genuinely like to hear about it &mdash;
+     <a href="mailto:kr.abhishekum@gmail.com?subject=DNA%20Globe%20%E2%80%94%20suggestion">write to me</a>.</p>
 </div>
 
 <div id="zoomctl">
@@ -919,6 +926,12 @@ const PINS = [{"i":0,"name":"DNA32 — 32nd International Conference on DNA Comp
 const BRKM = [{"y":"1982","t":"A paper almost nobody read","who":["seeman"]},{"y":"1983","t":"The first junction that would not move","who":["seeman"]},{"y":"1991","t":"A cube made of DNA","who":["jhchen","seeman"]},{"y":"1991","t":"A knot tied in one strand","who":["seeman"]},{"y":"1993","t":"The double-crossover tile","who":["seeman"]},{"y":"1994","t":"A Hamiltonian path in a test tube","who":["adleman"]},{"y":"1996","t":"DNA as a builder of inorganic matter","who":["alivisatos","mirkin"]},{"y":"1998","t":"Crystals by design","who":["winfree","seeman"]},{"y":"1999","t":"The first DNA machine","who":["mao","seeman"]},{"y":"2000","t":"Fuel made of DNA","who":["yurke","turberfield","simmel"]},{"y":"2000","t":"Tiles that compute as they grow","who":["mao","labean","reif","seeman"]},{"y":"2004","t":"Sierpinski triangles","who":["rothemund","winfree"]},{"y":"2004","t":"Rigid triangles from floppy junctions","who":["mao"]},{"y":"2004","t":"RNA joins in","who":[]},{"y":"2004","t":"Amplification without enzymes","who":["pierce"]},{"y":"2004","t":"A scaffold folded by helpers","who":["shih"]},{"y":"2006","t":"DNA origami","who":["rothemund"]},{"y":"2008","t":"Nanoparticle crystals grown by DNA","who":["gang","mirkin"]},{"y":"2009","t":"Origami in three dimensions","who":["douglas","dietz","shih"]},{"y":"2009","t":"A box with a lid","who":["andersen","kjems","gothelf"]},{"y":"2009","t":"The 1982 goal, reached","who":["seeman","mao"]},{"y":"2009","t":"A bipedal Brownian motor","who":["seeman"]},{"y":"2010","t":"A molecular assembly line","who":["seeman","yan","reif"]},{"y":"2011","t":"A pattern that copies itself","who":["seeman"]},{"y":"2012","t":"Bricks instead of a scaffold","who":["yin","ke","shih"]},{"y":"2012","t":"Optics written in sequence","who":["kuzyk","liedl"]},{"y":"2012","t":"A logic-gated nanorobot","who":["douglas","church"]},{"y":"2012","t":"DNA through a membrane","who":["simmel"]},{"y":"2012","t":"Motor proteins in tug of war","who":["shih"]},{"y":"2014","t":"RNA that folds as it is written","who":["geary","rothemund","andersen"]},{"y":"2014","t":"DNA-PAINT","who":["jungmann","yin"]},{"y":"2014","t":"Casting metal in DNA moulds","who":["yin"]},{"y":"2015","t":"Meshes, automatically","who":["hogberg"]},{"y":"2015","t":"Wires on a breadboard","who":["gothelf"]},{"y":"2016","t":"Printing recognition onto particles","who":["sleiman","serpell"]},{"y":"2016","t":"Rewriting base pairing from outside","who":["sleiman"]},{"y":"2017","t":"DNA folded by protein","who":["dietz"]},{"y":"2017","t":"A device inside a crystal","who":["seeman"]},{"y":"2018","t":"A nanorobot that treats tumours","who":["ding","yan"]},{"y":"2018","t":"Neural networks in a tube","who":["qian"]},{"y":"2019","t":"Algorithms that run reliably","who":["woods","winfree","rothemund"]},{"y":"2022","t":"An electrically driven rotary motor","who":["dietz","simmel"]},{"y":"2023","t":"Origami T-cell engagers","who":["dietz"]},{"y":"2026","t":"Twenty years of origami","who":["rothemund"]}];
 let brkHi=new Set(), brkPairs=[], flagFlash={i:-1,t:0};
 let fEvUp=true, fEvPast=true, flagT=0, flagPins=[];
+function applyDefaultFilters(){
+  Object.keys(D.areas).forEach(k=>fArea.add(k));
+  D.countries.forEach(([c])=>fCty.add(c));
+  fEvUp=true; fEvPast=true;
+  if(SMALL){ fArea.delete('industry'); fArea.delete('mentor'); fEvPast=false; }  // upcoming flags stay
+}
 const FLAGCOL={up:'#2C6EA8', past:'#B03A2E'};
 
 /* ================= state ================= */
@@ -940,7 +953,12 @@ const SITEP={};
 Object.keys(D.sites).forEach(s=>SITEP[s]=[]);
 D.people.forEach(p=>SITEP[p.site].push(p.id));
 
-const fArea=new Set(Object.keys(D.areas));   // every focus on at the start, companies and mentors included
+const fArea=new Set(Object.keys(D.areas));
+// A phone screen is small, so it opens on a quieter map: no company or mentor
+// markers and no flags for events that have already happened. Upcoming events
+// stay flagged. Everything is still one tap away in the filters.
+const SMALL = window.matchMedia ? window.matchMedia('(max-width:960px)').matches
+                                : (window.innerWidth||9999) <= 960;
 const fCty =new Set(D.countries.map(c=>c[0]));
 
 document.getElementById('stats').innerHTML =
@@ -1840,6 +1858,7 @@ function chips(el,obj,set,sw,after){
     box.appendChild(b);
   });
 }
+applyDefaultFilters();
 chips('areachips',D.areas,fArea,true);
 function evChips(){
   const box=document.getElementById('evchips'); box.innerHTML='';
@@ -1867,6 +1886,12 @@ function countryChips(){
   });
 }
 countryChips();
+document.getElementById('areaall').onclick=()=>{
+  if(fArea.size===Object.keys(D.areas).length) fArea.clear();
+  else Object.keys(D.areas).forEach(k=>fArea.add(k));
+  bumpFilters(); chips('areachips',D.areas,fArea,true);
+  if(selPerson && !pVis(P[selPerson])) closePanel();
+};
 document.getElementById('ctyall').onclick=()=>{
   if(fCty.size===D.countries.length) fCty.clear();
   else D.countries.forEach(([c])=>fCty.add(c));
@@ -1918,9 +1943,7 @@ document.getElementById('reset').onclick=()=>{
   closePanel(); zoom=1; lat0=26; showNet=false;
   spin=true; document.getElementById('t-spin').checked=true;
   document.getElementById('t-net').checked=false;
-  Object.keys(D.areas).forEach(k=>fArea.add(k));
-  D.countries.forEach(([c])=>fCty.add(c));
-  fEvUp=true; fEvPast=true; evChips();
+  applyDefaultFilters(); evChips();
   bumpFilters();
   chips('areachips',D.areas,fArea,true); countryChips();
   sIn.value=''; sOut.innerHTML='';
