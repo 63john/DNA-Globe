@@ -29,7 +29,7 @@ canvas.drag{cursor:grabbing}
 #stage{position:fixed;inset:0}
 
 /* ---------- masthead ---------- */
-#top{position:fixed;top:0;left:0;right:0;padding:20px 214px 30px 24px;pointer-events:none;z-index:6;
+#top{position:fixed;top:0;left:0;right:0;padding:20px 278px 30px 24px;pointer-events:none;z-index:6;
   background:linear-gradient(180deg,rgba(246,240,228,.96),rgba(246,240,228,.55) 58%,transparent);}
 .kicker{font-family:var(--sans);font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;
   color:var(--faint);margin:0 0 8px;font-weight:600}
@@ -42,7 +42,9 @@ h1 em{font-style:italic;color:#1B7A8C}
 
 /* ---------- signature ---------- */
 #credit{position:fixed;top:20px;right:26px;z-index:8;text-align:right;pointer-events:none;
-  font-family:var(--serif);max-width:186px}
+  font-family:var(--serif);max-width:252px}
+#credit .tag{display:block;font-family:var(--serif);font-size:10.5px;font-style:italic;
+  line-height:1.55;color:var(--muted);margin:6px 0 7px}
 #credit .lbl{display:block;font-family:var(--sans);font-size:9px;letter-spacing:.22em;
   text-transform:uppercase;color:var(--faint);font-weight:600}
 #credit b{display:block;font-size:15.5px;font-weight:500;font-style:italic;color:#4A4238;
@@ -202,7 +204,7 @@ h1 em{font-style:italic;color:#1B7A8C}
   margin:22px 0 0;font-weight:600;text-align:right}
 
 /* ---------- first-visit callout ---------- */
-#toast{position:fixed;left:71px;top:256px;z-index:13;width:226px;
+#toast{position:fixed;left:155px;top:157px;z-index:13;width:226px;
   background:var(--paper2);border:1px solid var(--rule2);border-left:3px solid #B07A1E;
   border-radius:12px;padding:11px 30px 11px 13px;cursor:pointer;
   box-shadow:0 10px 26px rgba(90,75,45,.22);transform-origin:left center;
@@ -223,7 +225,7 @@ h1 em{font-style:italic;color:#1B7A8C}
 #toastx{position:absolute;top:5px;right:6px;background:none;border:0;color:var(--faint);
   font-size:16px;line-height:1;cursor:pointer;padding:2px 5px;border-radius:5px}
 #toastx:hover{color:var(--ink);background:#EFE7D6}
-@media (max-width:960px){#toast{left:62px;top:204px;width:200px}}
+@media (max-width:960px){#toast{left:164px;top:136px;width:198px}}
 @media (prefers-reduced-motion:reduce){
   #toast{transform:none;transition:opacity .2s}
   #toast.on{transform:none}
@@ -231,7 +233,7 @@ h1 em{font-style:italic;color:#1B7A8C}
 }
 
 /* ---------- how-to guide ---------- */
-.zbtn.hb{margin-top:12px;font-family:var(--serif);font-size:17px;font-weight:600;color:#B07A1E}
+.zbtn.hb{margin-left:10px;font-family:var(--serif);font-size:17px;font-weight:600;color:#B07A1E}
 .zbtn.hb:hover{border-color:#B07A1E;color:#B07A1E}
 #help{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.97);z-index:12;
   width:min(560px,calc(100vw - 24px));max-height:calc(100vh - 44px);overflow-y:auto;padding:0;
@@ -369,7 +371,7 @@ h1 em{font-style:italic;color:#1B7A8C}
 }
 
 /* ---------- zoom buttons ---------- */
-#zoomctl{position:fixed;left:24px;top:176px;z-index:7;display:flex;flex-direction:column;gap:7px}
+#zoomctl{position:fixed;left:24px;top:176px;z-index:7;display:flex;align-items:center;gap:7px}
 .zbtn{width:35px;height:35px;display:flex;align-items:center;justify-content:center;padding:0;
   background:var(--panel);border:1px solid var(--rule);border-radius:11px;color:var(--muted);
   cursor:pointer;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
@@ -422,8 +424,9 @@ h1 em{font-style:italic;color:#1B7A8C}
   color:var(--faint);letter-spacing:.04em;text-align:center;pointer-events:none;transition:opacity .4s}
 
 @media (max-width:960px){
-  #top{padding:14px 134px 22px 16px}
-  #credit{top:14px;right:16px;max-width:126px}
+  #top{padding:14px 170px 22px 16px}
+  #credit{top:14px;right:16px;max-width:156px}
+  #credit .tag{font-size:9px;line-height:1.45;margin:5px 0 6px}
   #credit b{font-size:13px}
   #credit .lbl{font-size:8.5px}
   #credit .role{font-size:9px}
@@ -435,7 +438,8 @@ h1 em{font-style:italic;color:#1B7A8C}
   .ev-row{grid-template-columns:1fr;gap:2px}
   .sub{display:none}
   #kinds,#hint,#legal{display:none}
-  #zoomctl{left:12px;top:104px;gap:9px}
+  #zoomctl{left:12px;top:150px;gap:9px}
+  .zbtn.hb{margin-left:8px}
   .zbtn{width:42px;height:42px;border-radius:13px}
   .zbtn svg{width:17px;height:17px}
   #ctl{left:12px;right:12px;bottom:12px;width:auto}
@@ -460,6 +464,8 @@ h1 em{font-style:italic;color:#1B7A8C}
 
 <div id="credit">
   <span class="lbl">Made by</span>
+  <span class="tag">Made with my creativity, Prof. Ned Seeman's legacy and a little less
+    than more help of claude.ai</span>
   <b>Abhishek Kumar</b>
   <span class="role">PhD &middot; University of Toronto</span>
   <span class="loc">Canada</span>
