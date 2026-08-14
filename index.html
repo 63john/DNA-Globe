@@ -239,6 +239,43 @@ h1 em{font-style:italic;color:#1B7A8C}
   #toast.out{transform:none;transition:opacity .3s}
 }
 
+/* ---------- Ned's Moon ---------- */
+#ned{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.97);z-index:12;
+  width:min(620px,calc(100vw - 24px));max-height:calc(100vh - 44px);overflow-y:auto;padding:0;
+  opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;
+  background:linear-gradient(180deg,#FBF7EE,#F6F0E4)}
+#ned.on{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto}
+#ned.moved{transform:none !important}
+#ned.dragging{transition:none}
+.nedhdr{position:sticky;top:0;z-index:4;background:var(--paper2);
+  border-bottom:1px solid var(--rule);border-radius:16px 16px 0 0;
+  box-shadow:0 -22px 44px rgba(255,247,214,.5) inset}
+#ned h3{font-family:var(--serif);font-size:21px;font-weight:500;margin:0;padding:17px 22px 4px;
+  position:relative;cursor:move;user-select:none;-webkit-user-select:none;touch-action:none}
+.nedsub{font-family:var(--sans);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--faint);font-weight:600;padding:0 22px 14px}
+#nedclose{position:absolute;top:-2px;right:0;background:none;border:0;color:var(--faint);
+  font-size:21px;line-height:1;cursor:pointer;padding:2px 6px;border-radius:6px}
+#nedclose:hover{color:var(--ink);background:#EFE7D6}
+.nedbody{padding:16px 22px 22px}
+.ned-lede{font-size:13.5px;line-height:1.72;color:#3A342B;margin:0 0 4px;padding-bottom:15px;
+  border-bottom:1px solid var(--rule)}
+.ned-sec{margin-top:19px}
+.ned-sec h4{font-family:var(--sans);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:#8A3A2E;font-weight:700;margin:0 0 8px}
+.ned-sec p{font-size:13px;line-height:1.72;color:#4A4238;margin:0}
+.yr{font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:.06em;color:#8A7A5E;
+  background:#EFE7D6;border-radius:4px;padding:1px 5px;margin:0 1px;white-space:nowrap}
+.ned-sec .pchip{margin:2px 2px 2px 0}
+.ned-src{font-size:11px;line-height:1.6;color:var(--faint);margin:20px 0 0;padding-top:13px;
+  border-top:1px solid var(--rule)}
+@media (max-width:960px){
+  #ned{width:calc(100vw - 16px);max-height:calc(100vh - 24px)}
+  #ned h3{font-size:19px;padding:15px 18px 4px}
+  .nedsub{padding:0 18px 12px}
+  .nedbody{padding:14px 18px 18px}
+}
+
 /* ---------- how-to guide ---------- */
 .zbtn.hb{margin-left:10px;font-family:var(--serif);font-size:17px;font-weight:600;color:#B07A1E}
 .zbtn.hb:hover{border-color:#B07A1E;color:#B07A1E}
@@ -554,7 +591,16 @@ h1 em{font-style:italic;color:#1B7A8C}
   <p>The roster is a curated snapshot, not a complete census. Some researchers, labs and
      companies are certainly <b>missing</b>, and titles or affiliations may be out of date &mdash;
      people at this career stage move often. Lineage links are only drawn where a source
-     stated them.</p>
+     stated them; where a link is documented but a name, year or exact role could not be pinned
+     down, the arc is <b>dashed</b> rather than solid.</p>
+  <p>Everyone on the map <b>works on nucleic acids</b> &mdash; I test every entry's own research
+     description for that, and remove the ones that fail. The one exception is a separate,
+     labelled layer of <b>advisors from adjacent fields</b>, kept so the academic family trees
+     reach a real root instead of stopping in mid-air. Those cards say so on their face, and the
+     layer can be switched off.</p>
+  <p>The lineage graph is still sparse: it holds <b>180 links across 250 people</b>, and about
+     a quarter have no recorded advisor at all. That is a gap in what has been published about
+     who trained whom, not a claim that they trained with nobody.</p>
   <p>State and country borders come from simplified public cartographic data
      (Natural Earth, 1:110m) and are drawn for illustration. They <b>do not represent any
      official, legal or government position on boundaries</b>, and no political claim is
@@ -564,6 +610,8 @@ h1 em{font-style:italic;color:#1B7A8C}
     <li><b>6 August 2026</b>
       <span>I added the first entries from South America, Africa and the Gulf, a lot more academic
         lineage, and Google Scholar, ORCID and lab links on more than half the cards.</span>
+      <span>The moon is now Ned&rsquo;s Moon &mdash; tap it to read about Nadrian Seeman, whose one
+        idea in 1980 everything else here orbits.</span>
       <span>I also added the bone, dental and mineralised-tissue community as its own research
         focus &mdash; the Sichuan and Toronto groups, and the biomineralisation labs they work
         with.</span></li>
@@ -807,17 +855,85 @@ h1 em{font-style:italic;color:#1B7A8C}
 <p class="pub">Compiled 6 August 2026</p></div>
 </div>
 
+<div id="ned" class="card">
+  <div class="nedhdr">
+    <h3 id="nedhead" title="Drag to move"><span class="grip"></span>Ned&rsquo;s Moon
+      <button id="nedclose" aria-label="Close">&times;</button></h3>
+    <div class="nedsub">Nadrian C. Seeman &middot; 1945&ndash;2021 &middot; the man the whole map orbits</div>
+  </div>
+  <div class="nedbody">
+    <p class="ned-lede">The moon carries his name because everything else here orbits his one idea.
+      In 1980, sitting in the campus pub at Albany with a beer, he was turning over the problem of
+      crystallising proteins when he thought of M. C. Escher&rsquo;s woodcut <i>Depth</i> &mdash; a
+      lattice of flying fish receding into the dark. What if branched DNA junctions could be the
+      fish? He sketched a six-armed junction on a napkin. That sketch is the origin of this field.</p>
+
+    <div class="ned-sec"><h4>The idea, 1982</h4>
+      <p>He published it as <i>Nucleic acid junctions and lattices</i> in the Journal of Theoretical
+      Biology &mdash; a paper with no experiments in it, and for years almost no readers. The argument
+      was simple and strange: DNA&rsquo;s sticky ends are programmable, so branched junctions joined by
+      them should assemble into designed three-dimensional lattices. Those lattices could then hold
+      guest molecules still, in known orientations, so that diffraction could solve them. He wanted a
+      scaffold, not a nanotechnology. The nanotechnology was a by-product.</p></div>
+
+    <div class="ned-sec"><h4>What he then had to build</h4>
+      <p>Nothing existed, so he made it. A junction that would not migrate, by removing the sequence
+      symmetry that let the branch point slide <span class="yr">1983</span>. A cube with the
+      connectivity of a cube <span class="yr">1991</span>. A trefoil knot tied in a single strand, to
+      show topology was programmable too <span class="yr">1991</span>. The double-crossover tile,
+      rigid enough to build with, on which nearly everything since rests
+      <span class="yr">1993</span>. Two-dimensional crystals by design, with Erik Winfree
+      <span class="yr">1998</span>. The first DNA machine, a B-to-Z twist driven by cobalt hexammine
+      <span class="yr">1999</span>. A bipedal walker, a molecular assembly line, patterns that
+      copy themselves.</p></div>
+
+    <div class="ned-sec"><h4>Twenty-seven years to the answer</h4>
+      <p>The 3D crystal he proposed in 1982 arrived in 2009: tensegrity triangles with two-base sticky
+      ends, associating in directions that span space, giving a self-assembled crystal you could see
+      down a microscope. Most scientists do not get to finish the thing they started with. He did, and
+      then put a working device inside one <span class="yr">2017</span>.</p></div>
+
+    <div class="ned-sec"><h4>Not everything worked, and he said so</h4>
+      <p>The tribute volume opens with four decades in his lab, including a crystal that refused to form
+      the structure it was designed for. Instead of burying it, the group worked out what it <i>had</i>
+      done &mdash; assembled into a hexagonal arrangement through non-canonical A:C and G:T sticky
+      ends nobody had asked it to use. A failure read carefully turned into a result.</p></div>
+
+    <div class="ned-sec"><h4>The people</h4>
+      <p>His most durable output walks around. <button class="pchip" data-person="yan">Hao Yan</button>
+      <button class="pchip" data-person="mao">Chengde Mao</button>
+      <button class="pchip" data-person="jhchen">Junghuei Chen</button>
+      <button class="pchip" data-person="ding">Baoquan Ding</button> did their doctorates with him;
+      <button class="pchip" data-person="winfree">Erik Winfree</button> and
+      <button class="pchip" data-person="labean">Thomas LaBean</button> worked alongside him. Follow
+      any of them on this map and the tree keeps branching &mdash; through Arizona, Harvard, Munich,
+      Shanghai, Toronto &mdash; for four academic generations.</p></div>
+
+    <div class="ned-sec"><h4>Recognition, and the end</h4>
+      <p>The Kavli Prize in Nanoscience in 2010, shared with Donald Eigler, for developing
+      unprecedented methods to control matter at the nanoscale. The Franklin Medal in Chemistry in
+      2016. He died on 16 November 2021, aged 75, still at New York University, where he had been
+      since 1988. The 40th-anniversary volume that gathers 22 chapters from 43 authors across eight
+      countries is dedicated to him; it was assembled while he was alive and published after he
+      was gone.</p></div>
+
+    <p class="ned-src">Drawn from <i>Visions of DNA Nanotechnology at 40 for the Next 40</i>
+      (Jonoska &amp; Winfree, eds., Springer 2023) and Seeman &amp; Sleiman,
+      <i>Nature Reviews Materials</i> <b>3</b>, 17068 (2017).</p>
+  </div>
+</div>
+
 <div id="help" class="card">
   <div class="hlphdr">
     <h3 id="helphead" title="Drag to move"><span class="grip"></span>How to use this map
       <button id="helpclose" aria-label="Close">&times;</button></h3>
   </div>
   <div class="hlpbody">
-    <p class="hlp-lede">A map of who works on DNA nanotechnology, where, and who taught whom.
-      Every dot is an institution; open one to find the people, then follow a person to see
-      their academic family tree drawn across the world.</p>
+    <p class="hlp-lede">A map of who works on DNA nanotechnology, where, and who taught whom &mdash;
+      250 people at 145 institutions in 27 countries. Every dot is an institution; open one to find
+      the people, then follow a person to see their academic family tree drawn across the world.</p>
 
-    <div class="hlp-sec"><h4>Five things to try</h4>
+    <div class="hlp-sec"><h4>Six things to try</h4>
       <ol class="hlp-steps">
         <li><b>Turn the globe.</b> Drag it with one finger or the mouse. Scroll, pinch, or use
           <span class="kbd">+</span> <span class="kbd">&minus;</span> on the left to zoom.
@@ -832,6 +948,9 @@ h1 em{font-style:italic;color:#1B7A8C}
           <button class="try" data-try="events">Open Events</button></li>
         <li><b>See how the field was built.</b> 44 milestones from 1982 to now, and the people behind them.
           <button class="try" data-try="brk">Open Breakthroughs</button></li>
+        <li><b>Tap the moon.</b> It is called Ned&rsquo;s Moon, after Nadrian Seeman, whose sketch on a
+          pub napkin in 1980 started all of this. It hides once you zoom in.
+          <button class="try" data-try="ned">Meet Ned</button></li>
       </ol>
     </div>
 
@@ -843,14 +962,22 @@ h1 em{font-style:italic;color:#1B7A8C}
         <li><b>A thin ring</b> &mdash; several institutions stacked. Click to fan them out, or zoom in.</li>
         <li><b>A hairline leader</b> &mdash; the dot was nudged aside to stay readable; the line points at its true spot.</li>
         <li><b>Arcs</b> &mdash; who trained whom. The colours are explained bottom right.</li>
-        <li><b>Flags</b> &mdash; conferences. Blue is still to come and waves; red already happened.</li>
+        <li><b>Flags</b> &mdash; conferences. Blue is still to come and waves gently; red already happened.
+          They step aside while you are reading someone.</li>
+        <li><b>Grey dots</b> &mdash; the adjacent-field layer: advisors from outside DNA nanotechnology,
+          kept only so the family trees reach a real root. Their cards say so plainly.</li>
       </ul>
     </div>
 
     <div class="hlp-sec"><h4>Finding one person</h4>
-      <p>Type any name, lab, city or country into the search box in <b>Find &amp; filter</b>,
-      bottom left. Or narrow the map first with the <b>Research focus</b> and <b>Country</b> chips.
-      The panel has &minus; and &#8597; buttons to shrink or expand it if it is in your way.</p>
+      <p>The search box in <b>Find &amp; filter</b>, bottom left, matches names, labs, cities,
+      countries <b>and techniques</b> &mdash; try &ldquo;hydrogel&rdquo;, &ldquo;origami&rdquo; or
+      &ldquo;mineral&rdquo; and it will list the people who work on them, saying why each one matched.
+      Or narrow the map first with the <b>Research focus</b> and <b>Country</b> chips, each with an
+      all-or-none switch. The panel has &minus; and &#8597; buttons to shrink or expand it.</p>
+      <p style="margin-top:9px">Where a link exists, a person&rsquo;s card carries their
+      <b>Google Scholar</b> or <b>ORCID</b>, their lab site and their faculty page &mdash; about
+      130 of them so far, so the map is a place to start rather than a dead end.</p>
     </div>
 
     <div class="hlp-sec"><h4>The buttons, top right</h4>
@@ -865,8 +992,11 @@ h1 em{font-style:italic;color:#1B7A8C}
       <ul class="hlp-list">
         <li><span class="kbd">Esc</span> closes whatever is open.</li>
         <li><b>Reset</b>, in the filter panel, puts everything back including the rotation.</li>
-        <li>Rotation stops when you pick a person. Switch it back on with <b>Slow rotation</b>.</li>
+        <li>Rotation stops the moment you click anything. Switch it back on with <b>Slow rotation</b>.</li>
         <li>Country names, state borders and the moon can all be turned off under <b>Map</b>.</li>
+        <li>The globe turns more slowly the further you zoom in, so it never races past you.</li>
+        <li>Under <b>Map</b> there is also a view showing <b>only people with no lineage recorded</b>
+          &mdash; about 58 of them. It is the to-do list, not a hiding place.</li>
       </ul>
     </div>
   </div>
@@ -979,7 +1109,7 @@ const cv = document.getElementById('c'), ctx = cv.getContext('2d');
 let W=0,H=0,DPR=1,cx=0,cy=0,R=300,lastW=0,lastH=0;
 let lon0=-38, lat0=26, zoom=1;
 let spin=true, showNet=false, showNames=true, showCountries=true, showStates=true;
-let showMoon=true, moonA=Math.PI*0.28, moon=null;
+let showMoon=true, moonA=Math.PI*0.28, moon=null, hoverMoon=false;
 let spiderPins=[];
 let selSite=null, selPerson=null, selCluster=null, hoverKey=null;
 
@@ -1186,9 +1316,18 @@ function drawMoon(){
   if(!moon) return;
   const {x,y,r,a}=moon;
   ctx.save(); ctx.globalAlpha=a;
-  const g=ctx.createRadialGradient(x,y,r*0.55,x,y,r*2.4);
-  g.addColorStop(0,'rgba(255,250,230,.30)'); g.addColorStop(1,'rgba(255,250,230,0)');
-  ctx.beginPath(); ctx.arc(x,y,r*2.4,0,7); ctx.fillStyle=g; ctx.fill();
+  const pulse=1+0.055*Math.sin(flagT*1.15);          // a slow breath, not a blink
+  const hov=(hoverMoon?1.28:1);
+  // three layers of halo, widest and faintest first
+  const g3=ctx.createRadialGradient(x,y,r*0.7,x,y,r*4.6*pulse*hov);
+  g3.addColorStop(0,'rgba(255,247,214,.16)'); g3.addColorStop(1,'rgba(255,247,214,0)');
+  ctx.beginPath(); ctx.arc(x,y,r*4.6*pulse*hov,0,7); ctx.fillStyle=g3; ctx.fill();
+  const g2=ctx.createRadialGradient(x,y,r*0.6,x,y,r*2.7*pulse*hov);
+  g2.addColorStop(0,'rgba(255,250,228,.34)'); g2.addColorStop(1,'rgba(255,250,228,0)');
+  ctx.beginPath(); ctx.arc(x,y,r*2.7*pulse*hov,0,7); ctx.fillStyle=g2; ctx.fill();
+  const g=ctx.createRadialGradient(x,y,r*0.85,x,y,r*1.55*hov);
+  g.addColorStop(0,'rgba(255,253,240,.55)'); g.addColorStop(1,'rgba(255,253,240,0)');
+  ctx.beginPath(); ctx.arc(x,y,r*1.55*hov,0,7); ctx.fillStyle=g; ctx.fill();
   const b=ctx.createRadialGradient(x-r*0.36,y-r*0.40,r*0.08,x,y,r*1.08);
   b.addColorStop(0,'#FCF7EA'); b.addColorStop(.58,'#E9E0CC'); b.addColorStop(1,'#C0B49C');
   ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fillStyle=b; ctx.fill();
@@ -1199,7 +1338,20 @@ function drawMoon(){
   for(const [dx,dy,rr] of CR){ ctx.beginPath(); ctx.arc(x+dx*r,y+dy*r,rr*r,0,7); ctx.fill(); }
   ctx.restore();
   ctx.beginPath(); ctx.arc(x,y,r,0,7);
-  ctx.strokeStyle='rgba(138,122,94,.42)'; ctx.lineWidth=0.8; ctx.stroke();
+  ctx.strokeStyle=hoverMoon?'rgba(120,100,64,.75)':'rgba(138,122,94,.42)';
+  ctx.lineWidth=hoverMoon?1.3:0.8; ctx.stroke();
+  // a crescent of light on the sunward limb
+  ctx.beginPath(); ctx.arc(x,y,r*0.97,Math.PI*0.72,Math.PI*1.62);
+  ctx.strokeStyle='rgba(255,255,245,.7)'; ctx.lineWidth=1.5; ctx.stroke();
+  if(hoverMoon||moon.a>0.96){
+    ctx.font='italic 500 '+(11.5*Math.min(1.3,Math.max(0.9,zoom)))+'px '+FS;
+    ctx.textAlign='center'; ctx.textBaseline='top';
+    ctx.globalAlpha=a*(hoverMoon?1:0.72);
+    ctx.lineWidth=3; ctx.strokeStyle='rgba(246,240,228,.85)';
+    ctx.strokeText("Ned's Moon",x,y+r*1.5+3);
+    ctx.fillStyle=hoverMoon?'#8A3A2E':'#6E6455';
+    ctx.fillText("Ned's Moon",x,y+r*1.5+3);
+  }
   ctx.restore();
 }
 
@@ -1595,7 +1747,7 @@ function drawNodes(){
 let last=performance.now();
 function frame(now){
   const dt=Math.min(64,now-last); last=now;
-  if(spin && !dragging && !flying) lon0=(lon0+dt*0.0026)%360;
+  if(spin && !dragging && !flying) lon0=(lon0+dt*0.0026/Math.max(1,zoom))%360;
   if(flying) stepFly(dt);
   stepMoon(dt); flagT+=dt/1000;
   setRot(); tick();
@@ -1683,7 +1835,7 @@ function endPointer(e){
 }
 cv.addEventListener('pointerup',endPointer);
 cv.addEventListener('pointercancel',endPointer);
-cv.addEventListener('pointerleave',()=>{hoverKey=null;tip.classList.remove('on');});
+cv.addEventListener('pointerleave',()=>{hoverKey=null;hoverMoon=false;tip.classList.remove('on');});
 cv.addEventListener('wheel',e=>{e.preventDefault();
   zoomTo(zoom*(e.deltaY<0?1.16:1/1.16));},{passive:false});
 // double tap / double click in the same spot zooms in
@@ -1699,6 +1851,20 @@ cv.addEventListener('pointerup',e=>{
 const tip=document.getElementById('tip');
 function hit(mx,my,hover){
   const b=cv.getBoundingClientRect(), x=mx-b.left, y=my-b.top;
+  if(moon && moon.depth>=0 && moon.a>0.25 &&
+     Math.hypot(moon.x-x,moon.y-y) < moon.r+10){
+    if(hover){
+      hoverMoon=true; hoverKey=null;
+      tip.innerHTML='<b>Ned\u2019s Moon</b><div class="t2">Nadrian C. Seeman, 1945\u20132021</div>'+
+        '<ul><li>The founder of the field this map describes.</li></ul>'+
+        '<div class="t2" style="margin-top:6px;color:#8A3A2E">tap to read about him</div>';
+      tip.style.left=Math.min(mx+16,window.innerWidth-286)+'px';
+      tip.style.top=Math.min(my+16,window.innerHeight-180)+'px';
+      tip.classList.add('on'); cv.style.cursor='pointer';
+    } else { stopSpin(); showNed(true); }
+    return;
+  }
+  if(hover) hoverMoon=false;
   for(const f of flagPins){                         // event flags are drawn on top
     const inCloth = x>=f.x-4 && x<=f.x+f.cw+4 && y>=f.y-f.poleH-4 && y<=f.y-f.poleH+f.ch+4;
     const inPole  = Math.abs(x-f.x)<5 && y>=f.y-f.poleH && y<=f.y+3;
@@ -1756,6 +1922,7 @@ function hit(mx,my,hover){
       tip.classList.add('on'); cv.style.cursor='pointer';
     } else {tip.classList.remove('on'); cv.style.cursor='grab';}
   } else {
+    stopSpin();                        // a tap anywhere means "hold still, I'm looking"
     if(!best){ closePanel(); return; }
     const c=best.c;
     if(selCluster===best.key && c.sites.length>1){ closePanel(); return; }   // collapse
@@ -2024,7 +2191,8 @@ document.getElementById('notesclose').onclick=()=>showNotes(false);
 const eventsEl=document.getElementById('events');
 const brkEl=document.getElementById('brk');
 const helpEl=document.getElementById('help');
-const PANELS={notes:notes, events:eventsEl, brk:brkEl, help:helpEl};
+const nedEl=document.getElementById('ned');
+const PANELS={notes:notes, events:eventsEl, brk:brkEl, help:helpEl, ned:nedEl};
 function setPanelOpen(k,v){                       // only ever one of the four is open
   if(v) Object.keys(PANELS).forEach(n=>PANELS[n].classList.toggle('on', n===k));
   else PANELS[k].classList.remove('on');
@@ -2032,6 +2200,17 @@ function setPanelOpen(k,v){                       // only ever one of the four i
 function showEvents(v){ setPanelOpen('events',v); }
 function showBrk(v){ setPanelOpen('brk',v); }
 function showHelp(v){ setPanelOpen('help',v); }
+function showNed(v){ setPanelOpen('ned',v); }
+document.getElementById('nedclose').onclick=()=>showNed(false);
+document.getElementById('ned').querySelectorAll('[data-person]').forEach(b=>{
+  b.onclick=()=>{
+    const id=b.dataset.person, q=P[id]; if(!q) return;
+    fArea.add(q.area); fCty.add(D.sites[q.site].country); bumpFilters();
+    chips('areachips',D.areas,fArea,true); countryChips();
+    showNed(false); selectPerson(id);
+    const s2=D.sites[q.site]; flyTo(s2.lon,s2.lat);
+  };
+});
 document.getElementById('helpbtn').onclick=()=>showHelp(!helpEl.classList.contains('on'));
 document.getElementById('helpclose').onclick=()=>showHelp(false);
 const hintHelpBtn=document.getElementById('hinthelp');
@@ -2048,6 +2227,7 @@ document.getElementById('help').querySelectorAll('[data-try]').forEach(b=>{
                       selectPerson('carneiro'); flyTo(s2.lon,s2.lat); }
     if(k==='events'){ showEvents(true); }
     if(k==='brk'){ showBrk(true); }
+    if(k==='ned'){ showNed(true); }
   };
 });
 document.getElementById('evbtn').onclick=()=>showEvents(!eventsEl.classList.contains('on'));
@@ -2171,9 +2351,10 @@ brkTop.querySelectorAll('[data-th]').forEach(b=>{
 makeDraggable(brkEl, document.getElementById('brkhead'));
 makeDraggable(eventsEl, document.getElementById('evhead'));
 makeDraggable(helpEl, document.getElementById('helphead'));
+makeDraggable(nedEl, document.getElementById('nedhead'));
 // if the window shrinks, pull a moved panel back into view
 window.addEventListener('resize',()=>{
-  [brkEl,eventsEl,helpEl].forEach(el=>{
+  [brkEl,eventsEl,helpEl,nedEl].forEach(el=>{
     if(!el.classList.contains('moved')) return;
     const r=el.getBoundingClientRect();
     if(r.left>window.innerWidth-56) el.style.left=(window.innerWidth-56)+'px';
