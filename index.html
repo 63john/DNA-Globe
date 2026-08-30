@@ -4,6 +4,80 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>DNA Globe — The DNA Nanotechnology World</title>
+<meta name="ga-measurement-id" content="G-ZSWCF7RWX6">
+<script src="ga-config.js"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+window.gtag = gtag;
+(function(){
+  function measurementId(){
+    const fromWin = String(window.GA_MEASUREMENT_ID || '').trim();
+    const meta = document.querySelector('meta[name="ga-measurement-id"]');
+    const fromMeta = meta ? String(meta.getAttribute('content') || '').trim() : '';
+    const id = fromWin || fromMeta;
+    return /^G-[A-Z0-9]+$/.test(id) ? id : '';
+  }
+  function linkContext(el){
+    if(el.closest('#info')) return 'info_panel';
+    if(el.closest('#events')) return 'events';
+    if(el.closest('#notes')) return 'notes';
+    if(el.closest('#help')) return 'help';
+    if(el.closest('#ned')) return 'ned_moon';
+    if(el.closest('#legal') || el.closest('#ctl')) return 'chrome';
+    return 'page';
+  }
+  const api = {
+    id: '',
+    enabled: false,
+    pageView: function(){
+      if(!api.enabled) return;
+      gtag('event', 'page_view', {
+        page_title: document.title,
+        page_location: location.href,
+        page_path: location.pathname + location.search + location.hash
+      });
+    },
+    linkClick: function(a){
+      if(!api.enabled || !a || !a.href) return;
+      let outbound = false;
+      try{
+        outbound = a.protocol === 'mailto:' || a.protocol === 'tel:' || a.host !== location.host;
+      }catch(_){ outbound = true; }
+      const text = (a.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 120);
+      gtag('event', 'link_click', {
+        link_url: a.href,
+        link_text: text,
+        outbound: outbound,
+        page_location: location.href,
+        link_domain: a.hostname || '',
+        link_context: linkContext(a),
+        transport_type: 'beacon'
+      });
+    },
+    start: function(id){
+      const mid = /^G-[A-Z0-9]+$/.test(id || '') ? id : measurementId();
+      if(!mid || api.enabled) return false;
+      api.id = mid;
+      api.enabled = true;
+      window.GA_MEASUREMENT_ID = mid;
+      gtag('js', new Date());
+      gtag('config', mid, {send_page_view: true, anonymize_ip: true});
+      const s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(mid);
+      document.head.appendChild(s);
+      return true;
+    }
+  };
+  window.__ga = api;
+  api.start(measurementId());
+  document.addEventListener('click', function(e){
+    const a = e.target && e.target.closest && e.target.closest('a[href]');
+    if(a) api.linkClick(a);
+  }, true);
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -149,7 +223,17 @@ h1 em{font-style:italic;color:#1B7A8C}
   border-left:2px solid var(--rule2);font-style:italic}
 
 /* ---------- Events button + panel ---------- */
-#evbtn{margin-top:10px;pointer-events:auto;display:inline-flex;align-items:center;gap:7px;
+.credit-actions{display:flex;flex-direction:column;align-items:flex-end;gap:6px;margin-top:10px}
+#visitors{pointer-events:auto;display:inline-flex;align-items:center;gap:7px;
+  background:var(--panel);border:1px solid var(--rule2);border-radius:22px;padding:6px 13px 6px 11px;
+  font-family:var(--sans);color:#1B7A8C;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  box-shadow:0 3px 12px rgba(90,75,45,.12)}
+#visitors svg{width:15px;height:15px;display:block;flex:0 0 auto}
+#visitors .vlbl{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);font-weight:700}
+#visitors .vnum{font-family:var(--serif);font-size:15px;font-weight:500;color:#1B7A8C;
+  font-variant-numeric:tabular-nums;line-height:1;min-width:1ch}
+#evbtn{pointer-events:auto;display:inline-flex;align-items:center;gap:7px;
   background:var(--panel);border:1px solid var(--rule2);border-radius:22px;padding:7px 14px 7px 11px;
   font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
   cursor:pointer;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
@@ -410,7 +494,12 @@ h1 em{font-style:italic;color:#1B7A8C}
   #credit .lbl{font-size:8.5px}
   #credit .role{font-size:9px}
   #credit .loc{font-size:8.5px}
-  #evbtn{font-size:10.5px;padding:5px 11px 5px 9px;margin-top:7px}
+  .credit-actions{margin-top:7px;gap:5px}
+  #visitors{padding:4px 10px 4px 8px}
+  #visitors svg{width:13px;height:13px}
+  #visitors .vlbl{font-size:8px;letter-spacing:.14em}
+  #visitors .vnum{font-size:13px}
+  #evbtn{font-size:10.5px;padding:5px 11px 5px 9px}
   #evbtn svg{width:13px;height:13px}
   #events h3{font-size:18px;padding:16px 18px 13px}
   #evbody{padding:14px 18px 18px}
@@ -448,11 +537,68 @@ h1 em{font-style:italic;color:#1B7A8C}
   <b>Abhishek Kumar</b>
   <span class="role">PhD &middot; University of Toronto</span>
   <span class="loc">Canada</span>
-  <button id="evbtn" title="Conferences and meet-ups">
-    <svg viewBox="0 0 14 14" fill="none"><rect x="1.6" y="2.8" width="10.8" height="9.6" rx="1.6" stroke="currentColor" stroke-width="1.2"/><path d="M1.6 5.8h10.8M4.6 1.6v2.2M9.4 1.6v2.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-    Events
-  </button>
+  <div class="credit-actions">
+    <div id="visitors" role="status" aria-live="polite" aria-label="Visitor count"
+         title="Unique visitors. Counted once per browser every 30 minutes. Stored on Abacus, not Google Analytics.">
+      <svg viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="4.2" r="2.1" stroke="currentColor" stroke-width="1.2"/><path d="M2.6 11.6c.4-2.4 2.1-3.6 4.4-3.6s4 1.2 4.4 3.6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <span class="vlbl">Visitors</span>
+      <span class="vnum" id="vcount">—</span>
+    </div>
+    <button id="evbtn" title="Conferences and meet-ups">
+      <svg viewBox="0 0 14 14" fill="none"><rect x="1.6" y="2.8" width="10.8" height="9.6" rx="1.6" stroke="currentColor" stroke-width="1.2"/><path d="M1.6 5.8h10.8M4.6 1.6v2.2M9.4 1.6v2.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      Events
+    </button>
+  </div>
 </div>
+<script>
+/* Visitor count — not Google Analytics.
+   GA (G-ZSWCF7RWX6) can only send hits from this static page; the browser cannot
+   read Realtime reports. The number here is a unique-visitor total stored on
+   Abacus (https://abacus.jasoncameron.dev), a free integer API. One browser is
+   counted at most once every 30 minutes (localStorage + sessionStorage). */
+(function(){
+  const NS='dna-globe', KEY='visitors', BASE='https://abacus.jasoncameron.dev';
+  const SEEN='dnaglobe.visitor.seen', CACHE='dnaglobe.visitor.total';
+  const WINDOW_MS=30*60*1000;
+  const el=document.getElementById('vcount');
+  if(!el) return;
+  function fmt(n){
+    const x=Number(n);
+    return (isFinite(x)&&x>=0) ? Math.floor(x).toLocaleString('en-US') : '';
+  }
+  function paint(n){
+    const s=fmt(n);
+    if(!s) return;
+    el.textContent=s;
+    try{ localStorage.setItem(CACHE, String(Math.floor(Number(n)))); }catch(_){}
+  }
+  try{
+    const cached=localStorage.getItem(CACHE);
+    if(cached&&/^\d+$/.test(cached)) paint(cached);
+  }catch(_){}
+  function seenRecently(){
+    try{
+      const t=Number(localStorage.getItem(SEEN)||sessionStorage.getItem(SEEN)||0);
+      return t>0 && (Date.now()-t)<WINDOW_MS;
+    }catch(_){ return false; }
+  }
+  function markSeen(){
+    const t=String(Date.now());
+    try{ localStorage.setItem(SEEN,t); }catch(_){}
+    try{ sessionStorage.setItem(SEEN,t); }catch(_){}
+  }
+  const action=seenRecently()?'get':'hit';
+  fetch(BASE+'/'+action+'/'+NS+'/'+KEY)
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if(data&&data.value!=null){
+        paint(data.value);
+        if(action==='hit') markSeen();
+      }
+    })
+    .catch(function(){ /* keep cache or em-dash; never invent a number */ });
+})();
+</script>
 
 <div id="info" class="card">
   <div class="ih">
@@ -545,7 +691,7 @@ h1 em{font-style:italic;color:#1B7A8C}
 <div id="events" class="card">
   <button id="evclose" aria-label="Close">&times;</button>
   <h3 id="evhead" title="Drag to move"><span class="grip"></span>Events &amp; conferences</h3>
-  <div id="evbody"><p class="ev-lede">Conferences, schools and meet-ups in DNA nanotechnology and DNA-based materials. Verified against official society and conference pages on 6 August 2026 — <b>6 confirmed</b>, <b>5 expected but not yet dated</b>. Check the linked source before booking anything.</p>
+  <div id="evbody"><p class="ev-lede">Conferences, schools and meet-ups in DNA nanotechnology and DNA-based materials. Verified against official society and conference pages on 6 August 2026 — <b>5 confirmed</b>, <b>5 expected but not yet dated</b>. Check the linked source before booking anything.</p>
 <h4 class="ev-sec">CONFIRMED · REMAINDER OF 2026</h4>
 <div class="ev ok" id="evi1" data-start="2026-10-11" data-end="2026-10-14">
 <div class="ev-head"><div class="ev-when">11–14 October 2026</div></div>
@@ -583,17 +729,6 @@ h1 em{font-style:italic;color:#1B7A8C}
 <p class="ev-note">Covers nucleic-acid nanoparticle and nanostructure delivery, chemistry and targeting.</p>
 <a class="ev-link" href="https://www.keystonesymposia.org/conferences/conference-listing/meeting/J82027" target="_blank" rel="noopener">www.keystonesymposia.org/conferences/conference-listing/meeting/J82027</a>
 <button class="gobtn" data-flag="3"><svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4.2" stroke="currentColor" stroke-width="1.3"/><circle cx="6" cy="6" r="1.1" fill="currentColor"/></svg>Find its flag on the globe</button>
-</div>
-<div class="ev ok" id="evi4">
-<div class="ev-head"><div class="ev-when">2027 — dates not yet displayed</div></div>
-<div class="ev-name">Nucleic Acids Gordon Research Conference 2027</div>
-<div class="ev-place">USA (venue not yet posted)</div>
-<div class="ev-row"><span>Organisers</span><p>Gordon Research Conferences · organisers not yet public</p></div>
-<div class="ev-row"><span>Society</span><p>GRC</p></div>
-<div class="ev-row"><span>Deadlines</span><p>Application by 30 May 2027 · preliminary programme of nine sessions posted by 30 Sep 2026 · companion GRS application 29 May 2027, speaker abstracts 21 Mar 2027</p></div>
-<div class="ev-row"><span>Format</span><p>Single track, GRC format</p></div>
-<p class="ev-note">Mainly nucleic-acid biology and mechanism, with nanotechnology applications. The 2027 edition is confirmed by its published application deadlines even though dates are not yet shown.</p>
-<a class="ev-link" href="https://www.grc.org/nucleic-acids-conference/2027/" target="_blank" rel="noopener">www.grc.org/nucleic-acids-conference/2027</a>
 </div>
 <div class="ev ok" id="evi5" data-start="2027-06-27" data-end="2027-07-02">
 <div class="ev-head"><div class="ev-when">27 June – 2 July 2027</div></div>
@@ -1823,6 +1958,7 @@ function selectSite(sid){
     html+='</ul></div>';
   }
   ibody.innerHTML=html; wire(); info.classList.add('on');
+  if(typeof writeHash==='function') writeHash();
   document.getElementById('hint').style.opacity=0;
 }
 
@@ -1967,6 +2103,7 @@ document.getElementById('ctyall').onclick=()=>{
   if(fCty.size===D.countries.length) fCty.clear();
   else D.countries.forEach(([c])=>fCty.add(c));
   bumpFilters(); countryChips();
+  if(selPerson && !pVis(P[selPerson])) closePanel();
 };
 
 const kr=document.getElementById('kindrows');
@@ -1996,7 +2133,7 @@ function fields(p){
     const both=t=>{const a=fold(t), b=deFold(t); return a===b?a:a+' '+b;};
     f={name:both(p.name), inst:both(st.label+' '+st.short+' '+st.city),
        cty:fold(st.country), role:fold(p.role), note:fold(p.note||''),
-       fnote:fold(p.fnote||'')};
+       fnote:fold(p.fnote||''), area:both(D.areas[p.area].label)};
     FOLDED.set(p,f);
   }
   return f;
@@ -2011,8 +2148,9 @@ function renderSearch(){
     if(f.name.includes(q)) rank=0;
     else if(f.inst.includes(q)) {rank=1;why=st.short;}
     else if(f.cty.includes(q)) {rank=2;why=st.country;}
-    else if(f.role.includes(q)) {rank=3;why='works on this';}
-    else if(f.note.includes(q)||f.fnote.includes(q)) {rank=4;why='mentioned on their card';}
+    else if(f.area.includes(q)) {rank=3;why=D.areas[p.area].label;}
+    else if(f.role.includes(q)) {rank=4;why='works on this';}
+    else if(f.note.includes(q)||f.fnote.includes(q)) {rank=5;why='mentioned on their card';}
     return rank<0?null:{p,rank,why};
   }).filter(Boolean).sort((a,b)=>a.rank-b.rank||a.p.name.localeCompare(b.p.name)).slice(0,24);
   sHits.forEach(({p,why},i)=>{
@@ -2069,11 +2207,17 @@ document.getElementById('t-names').onchange=e=>showNames=e.target.checked;
 document.getElementById('t-countries').onchange=e=>showCountries=e.target.checked;
 document.getElementById('t-states').onchange=e=>showStates=e.target.checked;
 document.getElementById('reset').onclick=()=>{
-  closePanel(); zoom=1; lat0=26; showNet=false; gapsOnly=false; showFormer=false;
+  closePanel(); zoom=1; lon0=-38; lat0=26; flying=null;
+  showNet=false; gapsOnly=false; showFormer=false;
+  showMoon=true; showNames=true; showCountries=true; showStates=true;
   document.getElementById('t-gaps').checked=false;
   document.getElementById('t-former').checked=false;
   spin=true; document.getElementById('t-spin').checked=true;
   document.getElementById('t-net').checked=false;
+  document.getElementById('t-moon').checked=true;
+  document.getElementById('t-names').checked=true;
+  document.getElementById('t-countries').checked=true;
+  document.getElementById('t-states').checked=true;
   applyDefaultFilters(); evChips();
   bumpFilters();
   chips('areachips',D.areas,fArea,true); countryChips();
@@ -2137,6 +2281,7 @@ function writeHash(){
   const h = selPerson ? '#p='+selPerson : (selSite ? '#s='+selSite : '');
   if(('#'+(location.hash||'').replace(/^#/,'')) === (h||'#')) return;
   try{ history.replaceState(null,'', h || location.pathname+location.search); }catch(_){}
+  if(window.__ga && window.__ga.pageView) window.__ga.pageView();
 }
 function readHash(){
   const m=/^#(p|s)=([A-Za-z0-9_-]+)$/.exec(location.hash||'');
@@ -2152,7 +2297,10 @@ function readHash(){
   const st=D.sites[m[2]]; if(!st) return false;
   flyTo(st.lon,st.lat); selectSite(m[2]); return true;
 }
-window.addEventListener('hashchange',readHash);
+window.addEventListener('hashchange',()=>{
+  readHash();
+  if(window.__ga && window.__ga.pageView) window.__ga.pageView();
+});
 setTimeout(()=>{ if(readHash()) { const t=document.getElementById('toast');
                                   if(t) t.classList.remove('on'); } },400);
 
