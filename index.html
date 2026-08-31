@@ -487,27 +487,28 @@ h1 em{font-style:italic;color:#1B7A8C}
   color:var(--faint);letter-spacing:.04em;text-align:center;pointer-events:none;transition:opacity .4s}
 
 @media (max-width:960px){
-  #top{padding:14px 170px 22px 16px}
+  #top{padding:14px 178px 20px 16px}
   #credit{top:14px;right:16px;max-width:156px}
   #credit .tag{font-size:9px;line-height:1.45;margin:5px 0 6px}
-  #credit b{font-size:13px}
+  #credit b{font-size:13px;white-space:normal}
   #credit .lbl{font-size:8.5px}
   #credit .role{font-size:9px}
   #credit .loc{font-size:8.5px}
   .credit-actions{margin-top:7px;gap:5px}
-  #visitors{padding:4px 10px 4px 8px}
+  #visitors{padding:6px 12px 6px 10px;min-height:36px}
   #visitors svg{width:13px;height:13px}
   #visitors .vlbl{font-size:8px;letter-spacing:.14em}
   #visitors .vnum{font-size:13px}
-  #evbtn{font-size:10.5px;padding:5px 11px 5px 9px}
+  #evbtn{font-size:10.5px;padding:8px 12px 8px 10px;min-height:36px}
   #evbtn svg{width:13px;height:13px}
+  #stats{padding-left:2px;gap:10px 12px;margin-top:12px;max-width:calc(100vw - 182px)}
   #events h3{font-size:18px;padding:16px 18px 13px}
   #evbody{padding:14px 18px 18px}
   .ev-row{grid-template-columns:1fr;gap:2px}
   .sub{display:none}
   #kinds,#hint,#legal{display:none}
-  #zoomctl{left:12px;top:150px;gap:9px}
-  .zbtn.hb{margin-left:8px}
+  #zoomctl{left:12px;top:172px;flex-direction:column;align-items:flex-start;gap:6px}
+  .zbtn.hb{margin-left:0}
   .zbtn{width:42px;height:42px;border-radius:13px}
   .zbtn svg{width:17px;height:17px}
   #ctl{left:12px;right:12px;bottom:12px;width:auto}
@@ -532,10 +533,10 @@ h1 em{font-style:italic;color:#1B7A8C}
 
 <div id="credit">
   <span class="lbl">Credits</span>
-  <span class="tag">Made with my creativity, Prof. Ned Seeman's legacy and a little less
+  <span class="tag">Made with abhi's creativity, Prof. Ned Seeman's legacy and a little less
     than more help of claude.ai</span>
-  <b>Abhishek Kumar</b>
-  <span class="role">PhD &middot; University of Toronto</span>
+  <b>by Carneiro Lab</b>
+  <span class="role">University of Toronto</span>
   <span class="loc">Canada</span>
   <div class="credit-actions">
     <div id="visitors" role="status" aria-live="polite" aria-label="Visitor count"
